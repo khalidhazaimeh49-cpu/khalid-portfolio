@@ -268,6 +268,9 @@ img,video{display:block}
 .cbar small{display:block;color:var(--mute);font-size:14px;margin-bottom:10px}
 .copy{font-size:14px;color:var(--mute);margin-top:12px;padding:8px 0}
 .copy:hover{color:var(--ink)}
+.tel{display:block;margin-top:6px;font-size:clamp(20px,2.2vw,28px);text-decoration:none;font-variant-numeric:tabular-nums;white-space:nowrap;transition:color .3s}
+.tel:hover{color:var(--acc)}
+.socials a.wa{border-color:var(--acc);color:var(--ink)}
 .socials{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
 .socials a{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:99px;padding:13px 20px;text-decoration:none;font-size:15px;transition:all .3s}
 .socials a:hover{background:var(--acc);border-color:var(--acc)}
@@ -389,6 +392,7 @@ const CONFIG = {
   roles: ["Creative Producer", "Graphic Designer", "Video Producer", "Visual Storyteller"],
   cutout: "media/khalid-suit-v2.webp", cutoutSm: "media/khalid-suit-v2-sm.webp",
   email: "Khalidhazaimeh49@gmail.com",
+  phone: "+962 79 801 0849", phoneRaw: "962798010849",
   instagram: { handle: "@kkhhaalliidd_zx", url: "https://www.instagram.com/kkhhaalliidd_zx" },
   linkedin: { handle: "Khalid Hazaimeh", url: "https://www.linkedin.com/in/khalid-ahmad-4011651b8" },
   city: "Amman, Jordan", year: "2026"
@@ -718,8 +722,9 @@ function Finale({toast}) {
       <div class="fig rv"><img src=${CONFIG.cutoutSm} alt="" loading="lazy"/></div></div>
     <div class="cbar"><div class="wrap">
       <div><small>Open to collaborations, commissions and creative partnerships.</small>
-        <a class="mail" href=${"mailto:" + CONFIG.email}>${CONFIG.email}</a><br/><button class="copy" onClick=${copy}>Copy email address</button></div>
-      <div class="socials"><a href=${CONFIG.instagram.url} target="_blank" rel="noopener">Instagram · ${CONFIG.instagram.handle}</a><a href=${CONFIG.linkedin.url} target="_blank" rel="noopener">LinkedIn · ${CONFIG.linkedin.handle}</a></div>
+        <a class="mail" href=${"mailto:" + CONFIG.email}>${CONFIG.email}</a><br/><button class="copy" onClick=${copy}>Copy email address</button>
+        <a class="tel" href=${"tel:+" + CONFIG.phoneRaw} dir="ltr">${CONFIG.phone}</a></div>
+      <div class="socials"><a class="wa" href=${"https://wa.me/" + CONFIG.phoneRaw} target="_blank" rel="noopener">WhatsApp · ${CONFIG.phone}</a><a href=${CONFIG.instagram.url} target="_blank" rel="noopener">Instagram · ${CONFIG.instagram.handle}</a><a href=${CONFIG.linkedin.url} target="_blank" rel="noopener">LinkedIn · ${CONFIG.linkedin.handle}</a></div>
     </div></div>
     <footer class="foot"><div class="wrap" style=${{display: "flex", justifyContent: "space-between", gap: 16, flexWrap: "wrap", width: "100%"}}>
       <span>© ${new Date().getFullYear()} ${CONFIG.first} ${CONFIG.last}</span><span>Based in ${CONFIG.city}</span><button onClick=${() => go("top")}>Back to top ↑</button></div></footer>
