@@ -196,6 +196,13 @@ img,video{display:block}
 @media(max-width:760px){.sheet{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 /* bts */
+#bts .sheet{margin-bottom:clamp(60px,8vw,120px)}
+#bts .shot .frame{background:var(--bg2)}
+#bts .shot video{width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
+#bts .shot:hover video{transform:scale(1.06)}
+#bts .shot small{color:var(--mute)}
+#bts .shot .play{position:absolute;right:12px;bottom:12px;width:40px;height:40px;border-radius:50%;background:rgba(16,16,16,.6);backdrop-filter:blur(6px);display:grid;place-items:center;font-size:13px;color:#fff;transition:background .3s}
+#bts .shot:hover .play{background:var(--acc)}
 .bts{columns:3 260px;column-gap:14px}
 .bts-item{position:relative;display:block;width:100%;margin:0 0 14px;break-inside:avoid;border-radius:10px;overflow:hidden;background:var(--bg2)}
 .bts-item img,.bts-item video{width:100%;height:auto;transition:transform 1.2s var(--ease),filter .6s;filter:saturate(.9)}
@@ -488,21 +495,29 @@ function Photos({onView}) {
   </div></section>`;
 }
 
-function BtsItem({b, onClick}) {
-  const ref = useRef();
+function useAutoplay(ref) {
   useEffect(() => { const v = ref.current; if (!v) return;
     const vo = new IntersectionObserver(([e]) => { if (e.isIntersecting) v.play().catch(() => {}); else v.pause(); }, {threshold: .25});
     vo.observe(v); return () => vo.disconnect(); }, []);
-  return html`<button class="bts-item rv" onClick=${onClick} aria-label=${b.title}>
-    ${b.v ? html`<video ref=${ref} src=${b.v} poster=${b.img} muted loop playsinline preload="none"></video>` : html`<img src=${b.img} alt=${b.title} loading="lazy"/>`}
-    ${b.v && html`<span class="badge">▶ Clip</span>`}<span class="bts-cap">${b.title}</span></button>`;
+}
+
+function BtsClip({b, n, onClick}) {
+  const ref = useRef(); useAutoplay(ref);
+  return html`<button class="shot rv" onClick=${onClick} aria-label=${b.title}>
+    <div class="frame"><video ref=${ref} src=${b.v} poster=${b.img} muted loop playsinline preload="none"></video>
+      <span class="no">${String(n + 1).padStart(2, "0")}</span><span class="play" aria-hidden="true">▶</span></div>
+    <h3>${b.title}</h3><small>Behind the scenes · Clip</small></button>`;
 }
 
 function Bts({onView}) {
+  const list = BTS.map(x => ({...x, format: "Behind the scenes"}));
+  const clips = BTS.map((b, i) => [b, i]).filter(([b]) => b.v), photos = BTS.map((b, i) => [b, i]).filter(([b]) => !b.v);
   return html`<section class="band" id="bts"><div class="wrap">
     <div class="shead"><div><span class="kicker rv">On set</span><h2 class="disp rv">Production<br/>& BTS</h2></div>
       <p class="mute rv">The work behind the frame — lighting, camera, sound and the set-ups that make each shot possible.</p></div>
-    <div class="bts">${BTS.map((b, n) => html`<${BtsItem} key=${n} b=${b} onClick=${() => onView(BTS.map(x => ({...x, format: "Behind the scenes"})), n)}/>`)}</div>
+    <div class="sheet">${clips.map(([b, i], n) => html`<${BtsClip} key=${b.v} b=${b} n=${n} onClick=${() => onView(list, i)}/>`)}</div>
+    <div class="bts">${photos.map(([b, i]) => html`<button key=${b.img} class="bts-item rv" onClick=${() => onView(list, i)} aria-label=${b.title}>
+      <img src=${b.img} alt=${b.title} loading="lazy"/><span class="bts-cap">${b.title}</span></button>`)}</div>
   </div></section>`;
 }
 
