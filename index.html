@@ -239,7 +239,18 @@ img,video{display:block}
 .xp h3{font-family:Anton,sans-serif;font-weight:400;text-transform:uppercase;font-size:clamp(30px,3.6vw,52px);margin:0;line-height:1}
 .xp .role{margin:0;font-weight:600}
 .xp .role small{display:block;font-weight:400;color:var(--mute2);font-variant-numeric:tabular-nums}
-.xp .desc{margin:0;color:var(--mute2)}
+.xp .desc{margin:0;color:var(--mute2);padding:0;list-style:none}
+.xp .desc li{position:relative;padding:0 0 0 18px!important;margin-bottom:8px;border:0;display:block}
+.xp .desc li::before{content:"";position:absolute;left:0;top:.7em;width:8px;height:1px;background:var(--acc)}
+.xp .place{display:block;color:var(--mute2);font-size:14px;margin-top:8px}
+.xp-head{margin-top:clamp(60px,8vw,110px)}
+.xp-head+.xp{margin-top:0}
+.edu{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,5fr) minmax(0,3fr);gap:24px;align-items:start;margin-top:clamp(50px,7vw,90px);padding-top:clamp(28px,4vw,44px);border-top:1px solid rgba(16,16,16,.15)}
+.edu h3{font-size:clamp(34px,4vw,60px)}
+.edu .role{margin:0;font-weight:600}.edu .role small{display:block;font-weight:400;color:var(--mute2)}
+.edu .desc{margin:10px 0 0;color:var(--mute2)}
+.langs{margin:0;font-family:Anton,sans-serif;text-transform:uppercase;font-size:clamp(24px,2.4vw,34px);line-height:1.1}
+@media(max-width:860px){.edu{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:860px){.about,.xp li{grid-template-columns:minmax(0,1fr)}.xp li{gap:8px}}
 
 /* finale */
@@ -318,6 +329,9 @@ img,video{display:block}
 @keyframes twinkle{0%,100%{transform:scale(.2);opacity:0}50%{transform:scale(1);opacity:1}}
 @media(max-width:900px){.tool{flex-basis:calc(50% - 7px);min-height:200px}}
 @media(max-width:420px){.tool{padding:18px}.ticon{width:58px;height:58px}}
+.ti-layer{stroke:var(--ink);fill:var(--dark)}.ti-layer.l0{stroke:var(--acc);fill:rgba(255,90,31,.25);animation:lay0 3s ease-in-out infinite}
+.ti-layer.l1{animation:lay1 3s ease-in-out infinite}.ti-layer.l2{opacity:.6;animation:lay2 3s ease-in-out infinite}
+@keyframes lay0{50%{transform:translateY(-6px)}}@keyframes lay1{0%,100%{transform:translateY(6px)}50%{transform:translateY(8px)}}@keyframes lay2{0%,100%{transform:translateY(12px)}50%{transform:translateY(20px)}}
 /* film detail */
 .pv{position:fixed;inset:0;z-index:80;background:var(--bg);overflow-y:auto;clip-path:inset(100% 0 0 0);transition:clip-path .9s var(--ease);overscroll-behavior:contain}
 .pv.open{clip-path:inset(0)}
@@ -426,6 +440,7 @@ const BTS = [
 ];
 
 const TOOLS = [
+  { name:"Adobe Photoshop", short:"Photoshop", use:"Retouching & compositing", icon:"layers" },
   { name:"Adobe Illustrator", short:"Illustrator", use:"Vector, logos & branding", icon:"pen" },
   { name:"Adobe InDesign", short:"InDesign", use:"Layout & editorial", icon:"layout" },
   { name:"Adobe Premiere Pro", short:"Premiere Pro", use:"Editing & storytelling", icon:"timeline" },
@@ -436,9 +451,22 @@ const TOOLS = [
 ];
 
 const EXPERIENCE = [
-  { co:"ShezoMedia", when:"Jul 2025 — Present", role:"Multimedia Specialist", desc:"Production, filming, editing and design — shooting video content, editing from rough cut to final delivery, and designing the visual assets that go with it." },
-  { co:"Jo Platform", when:"Jul 2025 — Present", role:"Multimedia Specialist", desc:"Content production and creative media — developing ideas, shaping stories and delivering them across platforms." }
+  { co:"ShezoMedia", when:"Jul 2025 — Present", role:"Multimedia & Production Lead", place:"Amman, Jordan", points:[
+    "Lead the full production department — filming, video editing, graphic design and motion graphics.",
+    "Manage the company's equipment and technical resources to keep production quality high.",
+    "Run two media platforms, ShezoMedia and Jaww, producing 30–40 videos a month.",
+    "Produce two podcasts a month — filming, location set-up, editing and financing."] },
+  { co:"Jo Platform", when:"Jul 2025 — Present", role:"Multimedia Specialist", place:"Amman, Jordan", points:[
+    "Content production and creative media — developing ideas, shaping stories and delivering them across platforms."] },
+  { co:"Do-Art", when:"2024 — 2025", role:"Graphic Designer", place:"Irbid, Jordan", points:[
+    "Graphic designer at a mid-sized business, producing design work across print and digital."] },
+  { co:"Freelance", when:"2022 — 2024", role:"Graphic Designer", place:"Remote", points:[
+    "Custom logos and marketing materials for small businesses, including the full visual identity for Nay Clothing — logo, packaging and social media assets."] }
 ];
+
+const EDUCATION = { degree:"Bachelor of Design & Applied Arts — Graphic Design", school:"Faculty of Fine Arts, Yarmouk University", place:"Irbid, Jordan", when:"2020 — 2024",
+  note:"Graduation project: a complete visual identity for the brand \u201cOWL\u201d." };
+const LANGS = ["Arabic", "English"];
 
 /* ================== APP ================== */
 const {useState, useEffect, useRef} = React;
@@ -528,7 +556,7 @@ function Credits() {
       <button class="dot o" onClick=${() => go("design")}><b>${DESIGNS.length}</b><small>Designs</small></button>
       <button class="dot l" onClick=${() => go("photography")}><b>${PHOTOS.length}</b><small>Shoots</small></button>
     </div>
-    <p class="rv"><b>Multimedia specialist from Amman.</b> I set up, light, shoot, edit and design — taking an idea from the first sketch to the final frame.</p>
+    <p class="rv"><b>Multimedia & Production Lead, based in Amman.</b> Graphic design graduate of Yarmouk University — I set up, light, shoot, edit and design, taking an idea from the first sketch to the final frame.</p>
   </div></section>`;
 }
 
@@ -628,6 +656,7 @@ function Bts({onView}) {
 }
 
 const TOOL_ICONS = {
+  layers: html`<svg viewBox="0 0 64 64">${[0, 1, 2].map(i => html`<path key=${i} class=${"ti-layer l" + i} d="M32 14 L56 26 L32 38 L8 26 Z"/>`)}</svg>`,
   pen: html`<svg viewBox="0 0 64 64"><path class="ti-draw" d="M6 50 C 18 10, 40 10, 58 44"/><rect class="ti-pt" x="3" y="47" width="6" height="6"/><rect class="ti-pt" x="55" y="41" width="6" height="6"/><line class="ti-h" x1="6" y1="50" x2="22" y2="20"/><circle class="ti-pt2" cx="22" cy="20" r="3"/><path class="ti-nib" d="M40 30 l8 -14 l8 14 l-8 10 z M48 16 v14"/></svg>`,
   layout: html`<svg viewBox="0 0 64 64"><rect class="ti-frame" x="10" y="6" width="44" height="52" rx="3"/><rect class="ti-fill" x="16" y="12" width="32" height="14"/>${[32, 38, 44, 50].map((y, i) => html`<line key=${y} class="ti-line" style=${{animationDelay: i * .25 + "s"}} x1="16" y1=${y} x2=${i % 2 ? 40 : 48} y2=${y}/>`)}</svg>`,
   timeline: html`<svg viewBox="0 0 64 64"><rect class="ti-frame" x="4" y="14" width="56" height="38" rx="3"/><rect class="ti-clip a" x="8" y="20" width="22" height="8" rx="2"/><rect class="ti-clip b" x="22" y="31" width="26" height="8" rx="2"/><rect class="ti-clip c" x="10" y="42" width="16" height="6" rx="2"/><line class="ti-head" x1="8" y1="16" x2="8" y2="50"/></svg>`,
@@ -651,16 +680,21 @@ function About() {
   return html`<section class="band paper" id="about"><div class="wrap">
     <span class="kicker rv">About me</span>
     <div class="about">
-      <p class="big rv">I'm Khalid — a multimedia specialist who moves between camera, timeline and canvas to tell stories <span class="ser">that people feel before they understand.</span></p>
+      <p class="big rv">I'm Khalid — a multimedia professional and graphic designer who moves between camera, timeline and canvas to tell stories <span class="ser">that people feel before they understand.</span></p>
       <div class="cols rv">
-        <p>My work spans multimedia production, creative direction and graphic design. I take projects from the first idea through set-up, lighting, filming and editing to the final frame — and design the visuals that carry them.</p>
-        <p>Whether it's an awareness film, a campaign key visual or a thumbnail that has to stop the scroll, the goal is the same: a clear idea, a considered frame, and a finish that feels cinematic.</p>
-        <div class="tags">${["Creative Direction", "Video Production", "Cinematography", "Lighting", "Sound", "Editing", "Graphic Design", "Photo Manipulation", "Thumbnails", "Storytelling"].map(t => html`<span key=${t}>${t}</span>`)}</div>
+        <p>I studied graphic design at Yarmouk University and now lead the production department at ShezoMedia — filming, editing, graphic design and motion graphics — producing content for ShezoMedia and Jaww alongside a monthly podcast slate.</p>
+        <p>Before that I designed at Do-Art in Irbid and freelanced for small businesses, building identities like Nay Clothing. Whether it's an awareness film, a campaign key visual or a thumbnail that has to stop the scroll, the goal is the same: a clear idea, a considered frame, and a finish that feels cinematic.</p>
+        <div class="tags">${["Branding", "Logo Design", "Typography", "Illustration", "Layout Design", "Motion Graphics", "Video Editing", "Cinematography", "Photography", "Visual Storytelling", "Lighting & Sound", "Equipment Management"].map(t => html`<span key=${t}>${t}</span>`)}</div>
       </div>
     </div>
     <div class="toolkit"><div class="tk-head rv"><span class="kicker">Toolkit</span><h3 class="disp">The software<br/>behind the work</h3></div>
       <ul class="tools">${TOOLS.map((t, n) => html`<${ToolCard} key=${t.name} t=${t} n=${n}/>`)}</ul></div>
-    <ul class="xp" id="experience">${EXPERIENCE.map(x => html`<li key=${x.co} class="rv"><h3>${x.co}</h3><p class="role">${x.role}<small>${x.when}</small></p><p class="desc">${x.desc}</p></li>`)}</ul>
+    <div class="xp-head rv" id="experience"><span class="kicker">Experience</span></div>
+    <ul class="xp">${EXPERIENCE.map(x => html`<li key=${x.co} class="rv"><div><h3>${x.co}</h3><small class="place">${x.place}</small></div><p class="role">${x.role}<small>${x.when}</small></p>
+      <ul class="desc">${x.points.map(t => html`<li key=${t}>${t}</li>`)}</ul></li>`)}</ul>
+    <div class="edu rv"><div><span class="kicker">Education</span><h3 class="disp">Yarmouk<br/>University</h3></div>
+      <div><p class="role">${EDUCATION.degree}<small>${EDUCATION.when} · ${EDUCATION.place}</small></p><p class="desc">${EDUCATION.school}. ${EDUCATION.note}</p></div>
+      <div><span class="kicker">Languages</span><p class="langs">${LANGS.join(" · ")}</p></div></div>
   </div></section>`;
 }
 
