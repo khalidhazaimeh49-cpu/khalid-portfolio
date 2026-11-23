@@ -332,6 +332,13 @@ img,video{display:block}
 .ti-layer{stroke:var(--ink);fill:var(--dark)}.ti-layer.l0{stroke:var(--acc);fill:rgba(255,90,31,.25);animation:lay0 3s ease-in-out infinite}
 .ti-layer.l1{animation:lay1 3s ease-in-out infinite}.ti-layer.l2{opacity:.6;animation:lay2 3s ease-in-out infinite}
 @keyframes lay0{50%{transform:translateY(-6px)}}@keyframes lay1{0%,100%{transform:translateY(6px)}50%{transform:translateY(8px)}}@keyframes lay2{0%,100%{transform:translateY(12px)}50%{transform:translateY(20px)}}
+.ti-cursor{stroke:var(--acc);animation:blink 1s steps(1) infinite}
+.ti-dot{fill:var(--dark);stroke:none;animation:dot 1.2s ease-in-out infinite}
+@keyframes dot{50%{transform:translateY(-3px)}}
+.b1{animation:bub 3s ease-in-out infinite}.b2{animation:bub 3s 1.5s ease-in-out infinite}
+@keyframes bub{0%,100%{opacity:.5}50%{opacity:1}}
+.ti-lens{stroke:var(--acc);animation:scan 3s ease-in-out infinite}
+@keyframes scan{0%,100%{transform:translate(-22px,-8px)}50%{transform:translate(4px,8px)}}
 /* film detail */
 .pv{position:fixed;inset:0;z-index:80;background:var(--bg);overflow-y:auto;clip-path:inset(100% 0 0 0);transition:clip-path .9s var(--ease);overscroll-behavior:contain}
 .pv.open{clip-path:inset(0)}
@@ -447,7 +454,10 @@ const TOOLS = [
   { name:"Adobe After Effects", short:"After Effects", use:"Motion graphics & VFX", icon:"keys" },
   { name:"Adobe XD", short:"XD", use:"UI & prototypes", icon:"proto" },
   { name:"Figma", short:"Figma", use:"UI design & collaboration", icon:"comp" },
-  { name:"Canva", short:"Canva", use:"Fast social content", icon:"magic" }
+  { name:"Canva", short:"Canva", use:"Fast social content", icon:"magic" },
+  { name:"Claude", short:"Claude", use:"AI — concepts, scripts & copy", icon:"write" },
+  { name:"ChatGPT", short:"ChatGPT", use:"AI — brainstorming & ideas", icon:"chat" },
+  { name:"Gemini", short:"Gemini", use:"AI — research & references", icon:"scan" }
 ];
 
 const EXPERIENCE = [
@@ -656,6 +666,9 @@ function Bts({onView}) {
 }
 
 const TOOL_ICONS = {
+  write: html`<svg viewBox="0 0 64 64"><path class="ti-frame" d="M8 10 h48 a4 4 0 0 1 4 4 v28 a4 4 0 0 1 -4 4 h-30 l-10 10 v-10 h-8 a4 4 0 0 1 -4 -4 v-28 a4 4 0 0 1 4 -4z"/>${[20, 28, 36].map((y, i) => html`<line key=${y} class="ti-line" style=${{animationDelay: i * .35 + "s"}} x1="14" y1=${y} x2=${i === 2 ? 34 : 50} y2=${y}/>`)}<line class="ti-cursor" x1="40" y1="31" x2="40" y2="41"/></svg>`,
+  chat: html`<svg viewBox="0 0 64 64"><rect class="ti-frame b1" x="4" y="8" width="34" height="20" rx="10"/><rect class="ti-fill b2" x="24" y="34" width="36" height="20" rx="10"/>${[36, 44, 52].map((x, i) => html`<circle key=${x} class="ti-dot" style=${{animationDelay: i * .18 + "s"}} cx=${x} cy="44" r="2.6"/>`)}</svg>`,
+  scan: html`<svg viewBox="0 0 64 64">${[14, 22, 30, 38].map((y, i) => html`<line key=${y} class="ti-frame" x1="6" y1=${y} x2=${i % 2 ? 30 : 40} y2=${y}/>`)}<g class="ti-lens"><circle cx="38" cy="30" r="12"/><line x1="47" y1="39" x2="58" y2="50"/></g></svg>`,
   layers: html`<svg viewBox="0 0 64 64">${[0, 1, 2].map(i => html`<path key=${i} class=${"ti-layer l" + i} d="M32 14 L56 26 L32 38 L8 26 Z"/>`)}</svg>`,
   pen: html`<svg viewBox="0 0 64 64"><path class="ti-draw" d="M6 50 C 18 10, 40 10, 58 44"/><rect class="ti-pt" x="3" y="47" width="6" height="6"/><rect class="ti-pt" x="55" y="41" width="6" height="6"/><line class="ti-h" x1="6" y1="50" x2="22" y2="20"/><circle class="ti-pt2" cx="22" cy="20" r="3"/><path class="ti-nib" d="M40 30 l8 -14 l8 14 l-8 10 z M48 16 v14"/></svg>`,
   layout: html`<svg viewBox="0 0 64 64"><rect class="ti-frame" x="10" y="6" width="44" height="52" rx="3"/><rect class="ti-fill" x="16" y="12" width="32" height="14"/>${[32, 38, 44, 50].map((y, i) => html`<line key=${y} class="ti-line" style=${{animationDelay: i * .25 + "s"}} x1="16" y1=${y} x2=${i % 2 ? 40 : 48} y2=${y}/>`)}</svg>`,
