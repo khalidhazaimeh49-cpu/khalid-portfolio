@@ -263,6 +263,61 @@ img,video{display:block}
 .foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--mute);font-size:13px;padding:22px 0 30px;background:var(--dark)}
 @media(max-width:760px){.cbar .wrap{grid-template-columns:minmax(0,1fr)}.socials{justify-content:flex-start}.finale .fig{margin-top:-4vw}}
 
+/* toolkit */
+.toolkit{margin-top:clamp(60px,8vw,110px)}
+.tk-head{margin-bottom:28px}
+.tk-head h3{font-size:clamp(40px,5.4vw,84px)}
+.tools{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:14px;justify-content:center;perspective:1000px}
+.tool{--tx:0;--ty:0;position:relative;flex:0 1 calc(25% - 11px);min-height:230px;background:var(--dark);color:var(--ink);border-radius:20px;padding:22px;display:flex;flex-direction:column;justify-content:space-between;gap:18px;overflow:hidden;transform:rotateY(calc(var(--tx) * 14deg)) rotateX(calc(var(--ty) * -14deg));transition:transform .4s var(--ease),box-shadow .4s;animation:bob 6s var(--d) ease-in-out infinite}
+.tool.rv{transition:opacity 1s var(--ease),transform .4s var(--ease)}
+.tool.rv.in{transform:rotateY(calc(var(--tx) * 14deg)) rotateX(calc(var(--ty) * -14deg))}
+.tool::before{content:"";position:absolute;inset:0;background:radial-gradient(260px circle at calc(50% + var(--tx) * 100%) calc(50% + var(--ty) * 100%),rgba(255,90,31,.28),transparent 60%);opacity:0;transition:opacity .4s}
+.tool:hover{box-shadow:0 30px 50px -24px rgba(255,90,31,.55)}
+.tool:hover::before{opacity:1}
+@keyframes bob{50%{translate:0 -8px}}
+.tno{position:absolute;top:18px;right:20px;font-size:12px;color:var(--mute)}
+.ticon{width:72px;height:72px;position:relative}
+.ticon svg{width:100%;height:100%;overflow:visible;fill:none;stroke:var(--acc);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.tool h4{font-family:Anton,sans-serif;font-weight:400;text-transform:uppercase;font-size:clamp(26px,2.4vw,34px);line-height:1;margin:0;position:relative}
+.tool p{margin:6px 0 0;color:var(--mute);font-size:14px;position:relative}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.ti-draw{stroke-dasharray:90;animation:draw 3s ease-in-out infinite}
+@keyframes draw{0%{stroke-dashoffset:90}55%,100%{stroke-dashoffset:0}}
+.ti-pt{fill:var(--dark);stroke-width:2}.ti-pt2{fill:var(--acc);stroke:none}.ti-h{stroke-width:1.2;opacity:.6}
+.ti-nib{stroke:var(--ink);animation:nib 3s ease-in-out infinite}
+@keyframes nib{0%,100%{transform:translate(-30px,18px)}55%{transform:translate(0,0)}}
+.ti-frame{stroke:var(--ink);opacity:.75}
+.ti-fill{fill:var(--acc);stroke:none}.ti-fill2{fill:var(--ink);stroke:none;opacity:.5}
+.ti-line{stroke:var(--ink);transform-box:fill-box;transform-origin:left;animation:typeline 2.4s ease-in-out infinite}
+@keyframes typeline{0%{transform:scaleX(0)}40%,80%{transform:scaleX(1)}100%{transform:scaleX(0)}}
+.ti-clip{fill:var(--acc);stroke:none}.ti-clip.b{fill:var(--ink);opacity:.7}.ti-clip.c{opacity:.6}
+.ti-clip.a{animation:slide 4s ease-in-out infinite}.ti-clip.b{animation:slide 4s .6s ease-in-out infinite reverse}
+@keyframes slide{50%{transform:translateX(6px)}}
+.ti-head{stroke:var(--ink);stroke-width:2;animation:head 3s linear infinite}
+@keyframes head{to{transform:translateX(48px)}}
+.ti-path{stroke-dasharray:3 5;opacity:.7;stroke:var(--ink)}
+.ti-key{fill:var(--acc);stroke:none;animation:pulse 1.2s ease-in-out infinite alternate}
+@keyframes pulse{to{transform:scale(1.35)}}
+.ti-ball{fill:var(--ink);stroke:none;offset-path:path("M8 48 C 20 8, 44 56, 56 16");animation:along 2.6s ease-in-out infinite alternate}
+@keyframes along{from{offset-distance:0%}to{offset-distance:100%}}
+.ti-screens{animation:scr 3s ease-in-out infinite}
+@keyframes scr{0%,40%{transform:translateY(0)}50%,90%{transform:translateY(8px)}}
+.ti-arrow{stroke:var(--ink);opacity:.7;animation:nudge 1.5s ease-in-out infinite alternate}
+@keyframes nudge{to{transform:translateX(3px)}}
+.ti-grid>*{fill:none;transform-box:fill-box;transform-origin:center}
+.ti-s1{fill:var(--acc);stroke:none;animation:sw1 4s ease-in-out infinite}.ti-s2{stroke:var(--ink);animation:sw2 4s ease-in-out infinite}
+.ti-s3{stroke:var(--ink);animation:sw3 4s ease-in-out infinite}.ti-s4{stroke:var(--acc);animation:spin4 4s ease-in-out infinite}
+@keyframes sw1{25%,50%{transform:translate(28px,0)}75%,100%{transform:translate(0,0)}}
+@keyframes sw2{25%,50%{transform:translate(-28px,0)}75%,100%{transform:translate(0,0)}}
+@keyframes sw3{50%,75%{transform:rotate(90deg)}}
+@keyframes spin4{to{transform:rotate(180deg)}}
+.ti-wand{stroke:var(--ink);stroke-width:4;transform-origin:10px 54px;animation:wave 2s ease-in-out infinite}
+.ti-tip{stroke:var(--acc);stroke-width:4;transform-origin:10px 54px;animation:wave 2s ease-in-out infinite}
+@keyframes wave{50%{transform:rotate(-10deg)}}
+.ti-spark{fill:var(--acc);stroke:none;animation:twinkle 1.8s ease-in-out infinite}
+@keyframes twinkle{0%,100%{transform:scale(.2);opacity:0}50%{transform:scale(1);opacity:1}}
+@media(max-width:900px){.tool{flex-basis:calc(50% - 7px);min-height:200px}}
+@media(max-width:420px){.tool{padding:18px}.ticon{width:58px;height:58px}}
 /* film detail */
 .pv{position:fixed;inset:0;z-index:80;background:var(--bg);overflow-y:auto;clip-path:inset(100% 0 0 0);transition:clip-path .9s var(--ease);overscroll-behavior:contain}
 .pv.open{clip-path:inset(0)}
@@ -368,6 +423,16 @@ const BTS = [
   { v:"media/bts-3.mp4", img:"media/bts-3-poster.jpg", title:"Sound and camera prep" },
   { img:"media/bts-photo-4.jpg", title:"Two-camera podcast set" },
   { v:"media/bts-4.mp4", img:"media/bts-4-poster.jpg", title:"Monitoring a low-light set" }
+];
+
+const TOOLS = [
+  { name:"Adobe Illustrator", short:"Illustrator", use:"Vector, logos & branding", icon:"pen" },
+  { name:"Adobe InDesign", short:"InDesign", use:"Layout & editorial", icon:"layout" },
+  { name:"Adobe Premiere Pro", short:"Premiere Pro", use:"Editing & storytelling", icon:"timeline" },
+  { name:"Adobe After Effects", short:"After Effects", use:"Motion graphics & VFX", icon:"keys" },
+  { name:"Adobe XD", short:"XD", use:"UI & prototypes", icon:"proto" },
+  { name:"Figma", short:"Figma", use:"UI design & collaboration", icon:"comp" },
+  { name:"Canva", short:"Canva", use:"Fast social content", icon:"magic" }
 ];
 
 const EXPERIENCE = [
@@ -562,6 +627,26 @@ function Bts({onView}) {
   </div></section>`;
 }
 
+const TOOL_ICONS = {
+  pen: html`<svg viewBox="0 0 64 64"><path class="ti-draw" d="M6 50 C 18 10, 40 10, 58 44"/><rect class="ti-pt" x="3" y="47" width="6" height="6"/><rect class="ti-pt" x="55" y="41" width="6" height="6"/><line class="ti-h" x1="6" y1="50" x2="22" y2="20"/><circle class="ti-pt2" cx="22" cy="20" r="3"/><path class="ti-nib" d="M40 30 l8 -14 l8 14 l-8 10 z M48 16 v14"/></svg>`,
+  layout: html`<svg viewBox="0 0 64 64"><rect class="ti-frame" x="10" y="6" width="44" height="52" rx="3"/><rect class="ti-fill" x="16" y="12" width="32" height="14"/>${[32, 38, 44, 50].map((y, i) => html`<line key=${y} class="ti-line" style=${{animationDelay: i * .25 + "s"}} x1="16" y1=${y} x2=${i % 2 ? 40 : 48} y2=${y}/>`)}</svg>`,
+  timeline: html`<svg viewBox="0 0 64 64"><rect class="ti-frame" x="4" y="14" width="56" height="38" rx="3"/><rect class="ti-clip a" x="8" y="20" width="22" height="8" rx="2"/><rect class="ti-clip b" x="22" y="31" width="26" height="8" rx="2"/><rect class="ti-clip c" x="10" y="42" width="16" height="6" rx="2"/><line class="ti-head" x1="8" y1="16" x2="8" y2="50"/></svg>`,
+  keys: html`<svg viewBox="0 0 64 64"><path class="ti-path" d="M8 48 C 20 8, 44 56, 56 16"/>${[[8, 48], [32, 32], [56, 16]].map(([x, y], i) => html`<rect key=${x} class="ti-key" style=${{animationDelay: i * .4 + "s", transformOrigin: x + "px " + y + "px"}} x=${x - 4} y=${y - 4} width="8" height="8" transform=${"rotate(45 " + x + " " + y + ")"}/>`)}<circle class="ti-ball" r="4"/></svg>`,
+  proto: html`<svg viewBox="0 0 64 64"><rect class="ti-frame" x="20" y="4" width="24" height="56" rx="5"/><g class="ti-screens"><rect class="ti-fill" x="23" y="10" width="18" height="10" rx="1"/><rect class="ti-fill2" x="23" y="24" width="18" height="6" rx="1"/><rect class="ti-fill2" x="23" y="34" width="12" height="6" rx="1"/></g><path class="ti-arrow" d="M46 30 h12 m-4 -4 l4 4 l-4 4"/><path class="ti-arrow" d="M18 40 h-12 m4 -4 l-4 4 l4 4"/></svg>`,
+  comp: html`<svg viewBox="0 0 64 64"><g class="ti-grid"><rect class="ti-s1" x="8" y="8" width="20" height="20" rx="10"/><rect class="ti-s2" x="36" y="8" width="20" height="20" rx="3"/><rect class="ti-s3" x="8" y="36" width="20" height="20" rx="3"/><path class="ti-s4" d="M46 36 l10 10 l-10 10 l-10 -10 z"/></g></svg>`,
+  magic: html`<svg viewBox="0 0 64 64"><line class="ti-wand" x1="10" y1="54" x2="40" y2="24"/><path class="ti-tip" d="M40 24 l6 -6"/>${[[50, 12, 0], [56, 28, .5], [34, 8, 1], [24, 20, 1.4]].map(([x, y, d]) => html`<path key=${x} class="ti-spark" style=${{animationDelay: d + "s", transformOrigin: x + "px " + y + "px"}} d=${"M" + x + " " + (y - 5) + " L" + (x + 1.5) + " " + (y - 1.5) + " L" + (x + 5) + " " + y + " L" + (x + 1.5) + " " + (y + 1.5) + " L" + x + " " + (y + 5) + " L" + (x - 1.5) + " " + (y + 1.5) + " L" + (x - 5) + " " + y + " L" + (x - 1.5) + " " + (y - 1.5) + "Z"}/>`)}</svg>`
+};
+
+function ToolCard({t, n}) {
+  const tilt = e => { const r = e.currentTarget.getBoundingClientRect(); e.currentTarget.style.setProperty("--tx", ((e.clientX - r.left) / r.width - .5).toFixed(3)); e.currentTarget.style.setProperty("--ty", ((e.clientY - r.top) / r.height - .5).toFixed(3)); };
+  const reset = e => { e.currentTarget.style.setProperty("--tx", 0); e.currentTarget.style.setProperty("--ty", 0); };
+  return html`<li class="tool rv" style=${{"--d": n * .35 + "s"}} onPointerMove=${tilt} onPointerLeave=${reset}>
+    <span class="tno">${String(n + 1).padStart(2, "0")}</span>
+    <div class="ticon" aria-hidden="true">${TOOL_ICONS[t.icon]}</div>
+    <div><h4>${t.short}</h4><p>${t.use}</p></div>
+    <span class="sr">${t.name}</span></li>`;
+}
+
 function About() {
   return html`<section class="band paper" id="about"><div class="wrap">
     <span class="kicker rv">About me</span>
@@ -573,6 +658,8 @@ function About() {
         <div class="tags">${["Creative Direction", "Video Production", "Cinematography", "Lighting", "Sound", "Editing", "Graphic Design", "Photo Manipulation", "Thumbnails", "Storytelling"].map(t => html`<span key=${t}>${t}</span>`)}</div>
       </div>
     </div>
+    <div class="toolkit"><div class="tk-head rv"><span class="kicker">Toolkit</span><h3 class="disp">The software<br/>behind the work</h3></div>
+      <ul class="tools">${TOOLS.map((t, n) => html`<${ToolCard} key=${t.name} t=${t} n=${n}/>`)}</ul></div>
     <ul class="xp" id="experience">${EXPERIENCE.map(x => html`<li key=${x.co} class="rv"><h3>${x.co}</h3><p class="role">${x.role}<small>${x.when}</small></p><p class="desc">${x.desc}</p></li>`)}</ul>
   </div></section>`;
 }
