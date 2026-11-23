@@ -187,6 +187,13 @@ img,video{display:block}
 .rnav{display:flex;gap:10px;justify-content:flex-end}
 @media(max-width:760px){.rail{padding-inline:calc(50vw - 120px)}.poster{height:min(58svh,520px)}.rail-info{grid-template-columns:auto auto;}.rinfo{grid-column:1/-1;order:-1}}
 
+.dtabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:-20px;margin-bottom:10px}
+.dtabs button{border:1px solid var(--line);border-radius:99px;padding:11px 18px;font-size:15px;color:var(--mute);transition:all .3s;min-height:44px}
+.dtabs button:hover{border-color:var(--ink);color:var(--ink)}
+.dtabs button.on{background:var(--ink);color:var(--dark);border-color:var(--ink)}
+.dtabs sup{font-size:11px;margin-left:4px;opacity:.6}
+@media(max-width:760px){.dtabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-top:-10px}.dtabs::-webkit-scrollbar{display:none}.dtabs button{flex:none;font-size:14px;padding:10px 15px}}
+.round:disabled{opacity:.3;pointer-events:none}
 /* contact sheet (photography) */
 .sheet{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(12px,1.6vw,24px);align-items:start}
 .shot{position:relative;text-align:left;transition:transform .7s var(--ease)}
@@ -326,16 +333,22 @@ const FILMS = [
     body:"Instead of a montage of moments, this recap lets the participants tell the story — candid interviews intercut with the energy of the sessions, finished with bilingual Arabic and English subtitles for social. I produced, directed, filmed and edited the piece, and created the subtitles." }
 ];
 
+const DESIGN_GROUPS = [
+  { id:"kasih", label:"Kasih Campaign", note:"Product key visuals for Kasih Golden Tahini — four moods for one jar." },
+  { id:"type", label:"Quote & Typography", note:"Quote series and typographic posts for ShezoMedia's Human Space and national occasions." },
+  { id:"food", label:"Restaurant & Food", note:"Food ads and restaurant posters built for social." }
+];
+
 const DESIGNS = [
-  { img:"media/kasih-2.jpg", title:"Kasih Golden Tahini", ar:"طحينة الكسيح الذهبية", client:"Kasih", format:"Product key visual · 1 / 4", desc:"A dark, golden-light still life — the jar as hero among sesame, leaves and stone." },
-  { img:"media/true-nature.jpg", title:"Human Space — True Nature", ar:"فضاء إنساني", client:"ShezoMedia", format:"Quote post · Illustration & layout", desc:"A figure facing his true self in a golden mirror, surrounded by watching faces in painterly blue." },
-  { img:"media/kasih-1.jpg", title:"Kasih Golden Tahini", ar:"طحينة الكسيح الذهبية", client:"Kasih", format:"Product key visual · 2 / 4", desc:"A bold typographic layout built on the brand's green, with a flowing tahini pour." },
-  { img:"media/independence-80.jpg", title:"80 Years of Independence", ar:"٨٠ عاماً من الاستقلال", client:"ShezoMedia", format:"National occasion · Key visual", desc:"A monumental stone “80” beside the Jordanian flag, framed by a cave opening looking up into open sky." },
-  { img:"media/aurelius.jpg", title:"Human Space — Marcus Aurelius", ar:"فضاء إنساني", client:"ShezoMedia", format:"Quote post · Photo manipulation", desc:"A marble bust under falling light and smoke, warmed by one orange glow behind the quote mark." },
-  { img:"media/kasih-3.jpg", title:"Kasih Golden Tahini", ar:"طحينة الكسيح الذهبية", client:"Kasih", format:"Product key visual · 3 / 4", desc:"A warm, rustic kitchen scene in late light, with a slow tahini pour." },
-  { img:"media/conservative.jpg", title:"On Conservative Societies", ar:"من أمراض المجتمعات الذكورية والمحافظة", client:"ShezoMedia", format:"Quote post · Editorial layout", desc:"Heavy black and orange Arabic type over a two-tone portrait, framed by blurred classical columns." },
-  { img:"media/kasih-4.jpg", title:"Kasih Golden Tahini", ar:"طحينة الكسيح الذهبية", client:"Kasih", format:"Product key visual · 4 / 4", desc:"A dynamic tahini swirl wrapping the jar, with sesame seeds in mid-air." },
-  { img:"media/burger.jpg", title:"Order Now", ar:"", client:"Concept", format:"Food ad · Social template", desc:"A vertical food ad layout — floating hero burger, depth-of-field layers and a clear call to action." }
+  { cat:"kasih", img:"media/kasih-2.jpg", title:"Kasih Golden Tahini", ar:"طحينة الكسيح الذهبية", client:"Kasih", format:"Product key visual · 1 / 4", desc:"A dark, golden-light still life — the jar as hero among sesame, leaves and stone." },
+  { cat:"type", img:"media/true-nature.jpg", title:"Human Space — True Nature", ar:"فضاء إنساني", client:"ShezoMedia", format:"Quote post · Illustration & layout", desc:"A figure facing his true self in a golden mirror, surrounded by watching faces in painterly blue." },
+  { cat:"kasih", img:"media/kasih-1.jpg", title:"Kasih Golden Tahini", ar:"طحينة الكسيح الذهبية", client:"Kasih", format:"Product key visual · 2 / 4", desc:"A bold typographic layout built on the brand's green, with a flowing tahini pour." },
+  { cat:"type", img:"media/independence-80.jpg", title:"80 Years of Independence", ar:"٨٠ عاماً من الاستقلال", client:"ShezoMedia", format:"National occasion · Key visual", desc:"A monumental stone “80” beside the Jordanian flag, framed by a cave opening looking up into open sky." },
+  { cat:"type", img:"media/aurelius.jpg", title:"Human Space — Marcus Aurelius", ar:"فضاء إنساني", client:"ShezoMedia", format:"Quote post · Photo manipulation", desc:"A marble bust under falling light and smoke, warmed by one orange glow behind the quote mark." },
+  { cat:"kasih", img:"media/kasih-3.jpg", title:"Kasih Golden Tahini", ar:"طحينة الكسيح الذهبية", client:"Kasih", format:"Product key visual · 3 / 4", desc:"A warm, rustic kitchen scene in late light, with a slow tahini pour." },
+  { cat:"type", img:"media/conservative.jpg", title:"On Conservative Societies", ar:"من أمراض المجتمعات الذكورية والمحافظة", client:"ShezoMedia", format:"Quote post · Editorial layout", desc:"Heavy black and orange Arabic type over a two-tone portrait, framed by blurred classical columns." },
+  { cat:"kasih", img:"media/kasih-4.jpg", title:"Kasih Golden Tahini", ar:"طحينة الكسيح الذهبية", client:"Kasih", format:"Product key visual · 4 / 4", desc:"A dynamic tahini swirl wrapping the jar, with sesame seeds in mid-air." },
+  { cat:"food", img:"media/burger.jpg", title:"Order Now", ar:"", client:"Concept", format:"Food ad · Social template", desc:"A vertical food ad layout — floating hero burger, depth-of-field layers and a clear call to action." }
 ];
 
 const PHOTOS = [
@@ -483,29 +496,33 @@ function Films({onOpen}) {
 }
 
 function Design({onView}) {
-  const rail = useRef(), [a, setA] = useState(0);
-  useEffect(() => { const r = rail.current; if (!r) return; let raf = 0;
+  const rail = useRef(), [a, setA] = useState(0), [g, setG] = useState(DESIGN_GROUPS[0].id);
+  const items = DESIGNS.filter(x => x.cat === g), grp = DESIGN_GROUPS.find(x => x.id === g);
+  useEffect(() => { const r = rail.current; if (!r) return; let raf = 0; r.scrollLeft = 0; setA(0);
     const f = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => {
       const c = r.scrollLeft + r.clientWidth / 2; let best = 0, d = 1e9;
       [...r.children].forEach((el, n) => { const m = el.offsetLeft + el.offsetWidth / 2; if (Math.abs(m - c) < d) { d = Math.abs(m - c); best = n; } });
       setA(best); }); };
     const pad = () => { const k = r.children; if (!k.length) return; r.style.paddingLeft = Math.max(0, (r.clientWidth - k[0].offsetWidth) / 2) + "px"; r.style.paddingRight = Math.max(0, (r.clientWidth - k[k.length - 1].offsetWidth) / 2) + "px"; f(); };
     r.querySelectorAll("img").forEach(im => im.complete ? 0 : im.addEventListener("load", pad, {once: true})); pad(); addEventListener("resize", pad);
-    f(); r.addEventListener("scroll", f, {passive: true}); addEventListener("resize", f); return () => { r.removeEventListener("scroll", f); removeEventListener("resize", f); removeEventListener("resize", pad); }; }, []);
-  const to = n => { const r = rail.current, el = r && r.children[Math.max(0, Math.min(DESIGNS.length - 1, n))]; el && r.scrollTo({left: el.offsetLeft - (r.clientWidth - el.offsetWidth) / 2, behavior: RM ? "auto" : "smooth"}); };
+    r.addEventListener("scroll", f, {passive: true});
+    return () => { r.removeEventListener("scroll", f); removeEventListener("resize", pad); }; }, [g]);
+  const to = n => { const r = rail.current, el = r && r.children[Math.max(0, Math.min(items.length - 1, n))]; el && r.scrollTo({left: el.offsetLeft - (r.clientWidth - el.offsetWidth) / 2, behavior: RM ? "auto" : "smooth"}); };
   const key = e => { if (e.key === "ArrowRight") { e.preventDefault(); to(a + 1); } if (e.key === "ArrowLeft") { e.preventDefault(); to(a - 1); } };
-  const d = DESIGNS[a];
+  const d = items[Math.min(a, items.length - 1)];
   return html`<section class="band" id="design" style=${{overflow: "hidden", paddingTop: "clamp(60px,7vw,110px)"}}>
     <div class="wrap shead"><div><span class="kicker rv">Graphic design</span><h2 class="disp rv">Poster<br/>Wall</h2></div>
-      <p class="mute rv">Key visuals, quote series and campaign designs — swipe through, or tap a poster to see it full size.</p></div>
-    <div class="rail-wrap rv"><div class="rail" ref=${rail} tabindex="0" onKeyDown=${key} aria-label="Design gallery">
-      ${DESIGNS.map((x, n) => html`<button key=${n} class=${"poster" + (n === a ? " on" : "")} onClick=${() => n === a ? onView(DESIGNS, n) : to(n)} aria-label=${x.title}>
+      <p class="mute rv">${grp.note}</p></div>
+    <div class="wrap dtabs rv" role="tablist" aria-label="Design categories">${DESIGN_GROUPS.map(x => { const n = DESIGNS.filter(y => y.cat === x.id).length;
+      return html`<button key=${x.id} role="tab" aria-selected=${g === x.id} class=${g === x.id ? "on" : ""} onClick=${() => setG(x.id)}>${x.label}<sup>${n}</sup></button>`; })}</div>
+    <div class="rail-wrap"><div class="rail" key=${g} ref=${rail} tabindex="0" onKeyDown=${key} aria-label=${grp.label}>
+      ${items.map((x, n) => html`<button key=${x.img} class=${"poster" + (n === a ? " on" : "")} onClick=${() => n === a ? onView(items, n) : to(n)} aria-label=${x.title}>
         <img src=${x.img} alt=${x.title} loading=${n < 3 ? "eager" : "lazy"}/></button>`)}
     </div></div>
     <div class="wrap rail-info">
-      <div class="count">${String(a + 1).padStart(2, "0")} <small>/ ${String(DESIGNS.length).padStart(2, "0")}</small></div>
-      <div class="rinfo" key=${a}><h3>${d.title}</h3>${d.ar && html`<p class="ar">${d.ar}</p>`}<p>${d.desc}</p><span class="tag">${d.client} · ${d.format}</span></div>
-      <div class="rnav"><button class="round" onClick=${() => to(a - 1)} aria-label="Previous design">${I.left}</button><button class="round" onClick=${() => to(a + 1)} aria-label="Next design">${I.arrow}</button></div>
+      <div class="count">${String(a + 1).padStart(2, "0")} <small>/ ${String(items.length).padStart(2, "0")}</small></div>
+      <div class="rinfo" key=${g + a}><h3>${d.title}</h3>${d.ar && html`<p class="ar">${d.ar}</p>`}<p>${d.desc}</p><span class="tag">${d.client} · ${d.format}</span></div>
+      <div class="rnav"><button class="round" onClick=${() => to(a - 1)} aria-label="Previous design" disabled=${items.length < 2}>${I.left}</button><button class="round" onClick=${() => to(a + 1)} aria-label="Next design" disabled=${items.length < 2}>${I.arrow}</button></div>
     </div>
   </section>`;
 }
