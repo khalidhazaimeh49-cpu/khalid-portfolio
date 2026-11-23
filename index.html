@@ -70,11 +70,15 @@ img,video{display:block}
 }
 
 /* hero */
-.hero{position:relative;height:100svh;min-height:620px;overflow:hidden;--p:0;background:radial-gradient(120% 80% at 50% 40%,#1b1714,#101010 70%)}
+.hero{position:relative;height:100svh;min-height:620px;overflow:hidden;--p:0;--mx:0;--my:0;touch-action:pan-y;background:radial-gradient(120% 80% at 50% 40%,#1b1714,#101010 70%)}
+.pg{position:absolute;inset:0;z-index:2;pointer-events:none;transform:translate3d(calc(var(--mx) * 34px),calc(var(--my) * 26px),0)}
+.hero-light{position:absolute;inset:0;z-index:3;pointer-events:none;mix-blend-mode:soft-light;background:radial-gradient(420px circle at calc(50% + var(--mx) * 40%) calc(45% + var(--my) * 35%),rgba(255,200,160,.35),transparent 60%)}
+.hero-first{transform:translate3d(calc(var(--mx) * -36px),0,0)}
+.hero-side{translate:calc(var(--mx) * -10px) calc(var(--my) * -10px)}
 .hero-roles{position:absolute;top:clamp(80px,11vh,110px);left:0;right:0;display:flex;justify-content:space-between;gap:16px;font-size:13px;color:var(--mute);z-index:4;opacity:0;animation:fade 1s .9s forwards}
 .hero-roles b{color:var(--ink);font-weight:600;display:block}
 .hero-first{position:absolute;left:max(4vw,18px);right:max(4vw,18px);top:calc(clamp(80px,11vh,110px) + 50px);text-align:left;font-family:Anton,sans-serif;text-transform:uppercase;font-size:clamp(18px,2vw,28px);letter-spacing:.3em;z-index:4;color:var(--acc);opacity:0;animation:fade 1s .4s forwards}
-.hero-name{margin:0;position:absolute;left:0;right:0;top:calc(clamp(80px,11vh,110px) + 96px);text-align:center;font-family:Anton,sans-serif;text-transform:uppercase;font-size:min(23.5vw,40svh);line-height:.82;white-space:nowrap;transform:translateY(calc(var(--p) * -14%)) scale(calc(1 + var(--p) * .22));transform-origin:50% 0;pointer-events:none}
+.hero-name{margin:0;position:absolute;left:0;right:0;top:calc(clamp(80px,11vh,110px) + 96px);text-align:center;font-family:Anton,sans-serif;text-transform:uppercase;font-size:min(23.5vw,40svh);line-height:.82;white-space:nowrap;transform:translate3d(calc(var(--mx) * -26px),calc(var(--my) * -14px),0) translateY(calc(var(--p) * -14%)) scale(calc(1 + var(--p) * .22));transform-origin:50% 0;pointer-events:none}
 .hero-name span{display:inline-block;animation:open 1.6s var(--ease) both}
 @keyframes open{from{letter-spacing:.35em;opacity:0;filter:blur(14px)}}
 .hero-name.back{z-index:1;color:var(--paper)}
@@ -82,7 +86,8 @@ img,video{display:block}
 .hero-glow{position:absolute;left:50%;top:44%;width:min(62svh,74vw);aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%) scale(calc(1 + var(--p) * .3));background:radial-gradient(circle at 50% 45%,#ff7a45,#ff5a1f 45%,#b33a0e 70%,transparent 71%);z-index:2;opacity:.95;animation:rise 1.6s .2s var(--ease) both}
 @keyframes rise{from{transform:translate(-50%,-30%) scale(.6);opacity:0}}
 .hero-fig{position:absolute;left:50%;bottom:0;height:min(88svh,1080px);z-index:2;transform:translateX(-50%) translateY(calc(var(--p) * 10%)) scale(calc(1 + var(--p) * .06));transform-origin:50% 100%;animation:figIn 1.5s .3s var(--ease) both}
-.hero-fig img{height:100%;width:auto;filter:drop-shadow(0 0 60px rgba(255,90,31,.28)) drop-shadow(0 30px 40px rgba(0,0,0,.5))}
+.hero-fig{perspective:900px}
+.hero-fig img{transform:translate3d(calc(var(--mx) * 16px),calc(var(--my) * 8px),0) rotateY(calc(var(--mx) * 5deg)) rotateX(calc(var(--my) * -2deg));transform-origin:50% 100%;will-change:transform;height:100%;width:auto;filter:drop-shadow(0 0 60px rgba(255,90,31,.28)) drop-shadow(0 30px 40px rgba(0,0,0,.5))}
 @keyframes figIn{from{transform:translateX(-50%) translateY(14%);opacity:0}}
 .hero::after{content:"";position:absolute;inset:auto 0 0;height:34%;background:linear-gradient(transparent,rgba(16,16,16,.92));z-index:3;pointer-events:none}
 .hero-side{position:absolute;right:max(4vw,18px);top:50%;writing-mode:vertical-rl;font-size:13px;color:var(--mute);z-index:4;display:flex;gap:18px;align-items:center}
@@ -399,13 +404,30 @@ function Hero() {
   useEffect(() => { if (RM) return; let raf = 0;
     const f = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => { const p = Math.min(1, Math.max(0, scrollY / innerHeight)); ref.current && ref.current.style.setProperty("--p", p.toFixed(3)); }); };
     f(); addEventListener("scroll", f, {passive: true}); return () => removeEventListener("scroll", f); }, []);
+  useEffect(() => { if (RM) return; const el = ref.current; if (!el) return;
+    let tx = 0, ty = 0, cx = 0, cy = 0, last = 0, raf = 0, on = true;
+    const set = (x, y) => { const r = el.getBoundingClientRect(); tx = Math.max(-1, Math.min(1, (x - r.left) / r.width * 2 - 1)); ty = Math.max(-1, Math.min(1, (y - r.top) / r.height * 2 - 1)); last = performance.now(); };
+    const pm = e => set(e.clientX, e.clientY);
+    const tm = e => { const t = e.touches[0]; t && set(t.clientX, t.clientY); };
+    const out = () => { tx = 0; ty = 0; };
+    const loop = now => { raf = requestAnimationFrame(loop); if (!on) return;
+      let gx = tx, gy = ty; if (now - last > 2500) { gx = Math.sin(now / 2600) * .35; gy = Math.cos(now / 3400) * .25; }
+      cx += (gx - cx) * .07; cy += (gy - cy) * .07;
+      el.style.setProperty("--mx", cx.toFixed(4)); el.style.setProperty("--my", cy.toFixed(4)); };
+    const io = new IntersectionObserver(([e]) => { on = e.isIntersecting; }); io.observe(el);
+    el.addEventListener("pointermove", pm); el.addEventListener("pointerleave", out);
+    el.addEventListener("touchstart", tm, {passive: true}); el.addEventListener("touchmove", tm, {passive: true}); el.addEventListener("touchend", out);
+    raf = requestAnimationFrame(loop);
+    return () => { cancelAnimationFrame(raf); io.disconnect(); el.removeEventListener("pointermove", pm); el.removeEventListener("pointerleave", out);
+      el.removeEventListener("touchstart", tm); el.removeEventListener("touchmove", tm); el.removeEventListener("touchend", out); }; }, []);
   const ring = "Scroll to explore · Scroll to explore · ";
   return html`<section class="hero" id="top" ref=${ref}>
     <div class="wrap hero-roles">${CONFIG.roles.map(r => html`<div key=${r}><b>${r.split(" ")[0]}</b>${r.split(" ").slice(1).join(" ")}</div>`)}</div>
     <div class="hero-first" aria-hidden="true">${CONFIG.first}</div>
     <h1 class="hero-name back"><span>${CONFIG.last}</span><span style=${{position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)"}}> — ${CONFIG.first} ${CONFIG.last}</span></h1>
-    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="pg" aria-hidden="true"><div class="hero-glow"></div></div>
     <div class="hero-fig"><img src=${CONFIG.cutout} alt="Khalid Hazaimeh" fetchpriority="high"/></div>
+    <div class="hero-light" aria-hidden="true"></div>
     <div class="hero-side" aria-hidden="true"><span>${CONFIG.city}</span><i></i><span>${CONFIG.year}</span></div>
     <div class="wrap hero-bot">
       <div class="lead"><p class="ser">${CONFIG.headline}</p><small>Creative Producer / Graphic Designer / Visual Storyteller</small></div>
