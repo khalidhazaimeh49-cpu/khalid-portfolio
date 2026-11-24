@@ -207,6 +207,31 @@ img,video{display:block}
 .shot small{display:block;margin-top:6px;font-size:13px;color:var(--mute2)}
 @media(max-width:760px){.sheet{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
+/* photo series */
+.series{margin-top:clamp(80px,10vw,150px)}
+.series-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(20px,4vw,60px);align-items:end;margin-bottom:clamp(28px,4vw,48px);padding-top:clamp(24px,3vw,36px);border-top:1px solid rgba(16,16,16,.15)}
+.series-head h3{font-size:clamp(44px,6.4vw,96px)}
+.series-head .ar{margin:8px 0 0;font-size:20px;color:var(--mute2);text-align:left}
+.series-head p.mute{margin:0;font-size:17px;max-width:46ch}
+.series-head small{display:block;margin-top:12px;font-size:13px;color:var(--acc)}
+.sgrid{display:grid;gap:clamp(10px,1.4vw,18px)}
+.diptych .sgrid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.portrait .sgrid{grid-template-columns:repeat(12,minmax(0,1fr))}
+.portrait .sitem{grid-column:span 3}
+.portrait .sitem:nth-child(-n+3){grid-column:span 4}
+.sitem{text-align:left;display:block}
+.sframe{display:block;position:relative;overflow:hidden;border-radius:10px;background:#111;box-shadow:0 20px 40px -28px rgba(0,0,0,.6)}
+.diptych .sframe{aspect-ratio:3/4}
+.portrait .sframe{aspect-ratio:2/3}
+.sframe img{width:100%;height:100%;object-fit:cover;transition:transform 1.4s var(--ease),filter .8s}
+.sitem:hover .sframe img{transform:scale(1.05)}
+.diptych .sitem:not(:hover) .sframe img{filter:grayscale(.15)}
+.sframe::after{content:"↗";position:absolute;right:12px;top:12px;width:38px;height:38px;border-radius:50%;background:var(--acc);color:#fff;display:grid;place-items:center;font-size:16px;transform:scale(0);transition:transform .45s var(--ease)}
+.sitem:hover .sframe::after,.sitem:focus-visible .sframe::after{transform:scale(1)}
+.scap{display:flex;gap:10px;align-items:baseline;margin-top:10px;font-size:14px;color:var(--mute2)}
+.scap b{font-family:Anton,sans-serif;font-weight:400;color:var(--dark);font-size:15px}
+@media(max-width:860px){.series-head{grid-template-columns:minmax(0,1fr)}.diptych .sgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .portrait .sgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.portrait .sitem,.portrait .sitem:nth-child(-n+3){grid-column:auto}.portrait .sitem:first-child{grid-column:1/-1}.portrait .sitem:first-child .sframe{aspect-ratio:4/5}}
 /* bts */
 #bts .sheet+.sheet{margin-top:clamp(50px,7vw,100px)}
 #bts .sheet.five{grid-template-columns:repeat(5,minmax(0,1fr))}
@@ -438,6 +463,17 @@ const PHOTOS = [
   { img:"media/identity.jpg", title:"Identity", ar:"الهوية", role:"Photography · Lighting · Thumbnail design", desc:"A full-length portrait in white — the only bright element in a low-light set." }
 ];
 
+const SERIES = [
+  { id:"human-nature", no:"Series 01", title:"Human × Nature", ar:"الإنسان × الطبيعة", kind:"diptych",
+    desc:"A conceptual photo series: a dancer recreates the shapes of the natural world — a wave, a tree, a sprout, a frog, a mantis, a crab, a flamingo — each frame paired with the form it echoes.",
+    meta:"Conceptual photography · Studio lighting · Compositing",
+    items:[["media/hn/2.jpg","If you truly love nature"],["media/hn/1.jpg","The Wave"],["media/hn/3.jpg","The Tree"],["media/hn/4.jpg","The Sprout"],["media/hn/5.jpg","The Frog"],["media/hn/6.jpg","The Mantis"],["media/hn/7.jpg","The Crab"],["media/hn/8.jpg","The Flamingo"]] },
+  { id:"studio-portraits", no:"Series 02", title:"Studio Portraits", ar:"بورتريه استوديو", kind:"portrait",
+    desc:"A fashion-portrait session against black — warm key light, a hard backlight and a single red accent carried through lips and nails.",
+    meta:"Portrait photography · Lighting · Retouching",
+    items:[["media/sp/4.jpg",""],["media/sp/7.jpg",""],["media/sp/1.jpg",""],["media/sp/2.jpg",""],["media/sp/3.jpg",""],["media/sp/6.jpg",""],["media/sp/5.jpg",""]] }
+];
+
 const BTS = [
   { v:"media/bts-1.mp4", img:"media/bts-1-poster.jpg", title:"Lighting a studio interview" },
   { img:"media/bts-photo-5.jpg", title:"Multi-camera studio set-up" },
@@ -568,7 +604,7 @@ function Credits() {
     <div class="dots rv">
       <button class="dot w" onClick=${() => go("films")}><b>${FILMS.length}</b><small>Films</small></button>
       <button class="dot o" onClick=${() => go("design")}><b>${DESIGNS.length}</b><small>Designs</small></button>
-      <button class="dot l" onClick=${() => go("photography")}><b>${PHOTOS.length}</b><small>Shoots</small></button>
+      <button class="dot l" onClick=${() => go("photography")}><b>${PHOTOS.length + SERIES.reduce((a, x) => a + x.items.length, 0)}</b><small>Photos</small></button>
     </div>
     <p class="rv"><b>Multimedia & Production Lead, based in Amman.</b> Graphic design graduate of Yarmouk University — I set up, light, shoot, edit and design, taking an idea from the first sketch to the final frame.</p>
   </div></section>`;
@@ -641,6 +677,13 @@ function Photos({onView}) {
     <div class="sheet">${PHOTOS.map((p, n) => html`<button key=${p.img} class="shot rv" onClick=${() => onView(PHOTOS.map(x => ({...x, format: x.role, client: "ShezoMedia"})), n)}>
       <div class="frame"><img src=${p.img} alt=${p.title} loading="lazy"/><span class="no">${String(n + 1).padStart(2, "0")}</span></div>
       <h3>${p.title}</h3><p class="ar">${p.ar}</p><small>${p.role}</small></button>`)}</div>
+    ${SERIES.map(sr => { const list = sr.items.map(([img, t], n) => ({img, title: sr.title + " — " + (t || String(n + 1).padStart(2, "0")), ar: sr.ar, desc: sr.desc, format: sr.meta}));
+      return html`<div key=${sr.id} class=${"series " + sr.kind}>
+        <div class="series-head rv"><div><span class="kicker">${sr.no} · ${sr.items.length} frames</span><h3 class="disp">${sr.title}</h3><p class="ar">${sr.ar}</p></div>
+          <div><p class="mute">${sr.desc}</p><small>${sr.meta}</small></div></div>
+        <div class="sgrid">${sr.items.map(([img, t], n) => html`<button key=${img} class="sitem rv" style=${{transitionDelay: (n % 4) * 70 + "ms"}} onClick=${() => onView(list, n)} aria-label=${sr.title + " " + (n + 1)}>
+          <span class="sframe"><img src=${img} alt=${sr.title + " — " + (t || n + 1)} loading="lazy"/></span>
+          <span class="scap"><b>${String(n + 1).padStart(2, "0")}</b>${t}</span></button>`)}</div></div>`; })}
   </div></section>`;
 }
 
